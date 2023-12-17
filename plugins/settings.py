@@ -19,7 +19,7 @@ async def user_settings(user_id):
     ask_emojis = "Ask for Emojis"
     ask_emojis_msg = f"Set to True if you want the bot to ask for emojis that will be set to the video sticker while adding to pack. If set to False, all stickers will use default emoji, which is - {emoji.RED_HEART}"
     get_webm = "Get WEBM"
-    get_webm_msg = f"Set to True if you want to get webm files when you send any existing video sticker. This way, you can add stickers from other people's packs using @Stickers. If False, bot will ignore the sticker."
+    get_webm_msg = "Set to True if you want to get webm files when you send any existing video sticker. This way, you can add stickers from other people's packs using @Stickers. If False, bot will ignore the sticker."
     kang_mode = "Kang Mode"
     kang_mode_msg = "Set to True if you want to add stickers to your pack by just sending a video sticker from some existing pack. This way, you can add stickers from other people's packs to your pack. If False, bot will ignore the sticker."
     default_emojis = "Default Emojis"
@@ -28,7 +28,6 @@ async def user_settings(user_id):
     ask_emojis_db = data['ask_emojis']
     get_webm_db = data['get_webm']
     kang_mode_db = data['kang_mode']
-    default_emojis_db = data['default_emojis']
     general_text = "**{}** : {} \n{} \n\n"
     if ask_emojis_db:
         text += general_text.format(ask_emojis, 'True', ask_emojis_msg)
@@ -48,7 +47,7 @@ async def user_settings(user_id):
     else:
         text += general_text.format(kang_mode, 'False', kang_mode_msg)
         kang_mode += cross
-    if default_emojis_db:
+    if default_emojis_db := data['default_emojis']:
         text += general_text.format(default_emojis, default_emojis_db, default_emojis_msg)
         default_emojis += ' - SET'
     else:
@@ -68,8 +67,7 @@ async def default_emojis_settings(user_id):
     data = await database.get('users', user_id)
     if not data:
         return False, False
-    data = data['default_emojis']
-    if data:
+    if data := data['default_emojis']:
         markup = InlineKeyboardMarkup([
             [InlineKeyboardButton('Change Emojis', callback_data="change_default_emojis")],
             [InlineKeyboardButton('Remove Default Emojis', callback_data="remove_default_emojis")],

@@ -16,10 +16,7 @@ async def packs_func(_, msg: Message):
         if not packs:
             await msg.reply('You have no packs yet. Create one by sending a Video or GIF', quote=True)
             return
-        if packs == 1:
-            string = '**Your Pack** \n\n'
-        else:
-            string = '**Your Packs** \n\n'
+        string = '**Your Pack** \n\n' if packs == 1 else '**Your Packs** \n\n'
         number = 0
         for n in range(1, packs+1):
             number += 1
